@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Auteurs - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <h3>
+        <a href="{{ path('myblog_auteur_showall') }}"><- tous les auteurs</a>
+    </h3>
+
+    {% if auteur is null  %}
+        <h3> Impossible de trouver votre auteur </h3>
+    {% else %}
+        <h2>{{ auteur.fullName }}</h2>
+        <br>
+        {{ auteur.bio  }}
+        <br>
+        {{ auteur.dateNaissance | date("d/m/Y") }}
+
+
+        {% if is_granted('ROLE_USER') %}
+            <div>
+                <a href="{{ path("myblog_auteur_remove", { idAuteur: auteur.id }) }}">
+                    Supprimer
+                </a>
+
+                <a href="{{ path("myblog_auteur_update", { idAuteur: auteur.id }) }}">
+                    Éditer
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock innerContent %}
+
+
+
+{#
+
+
+
+
+
+#}

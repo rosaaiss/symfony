@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Création auteur - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <h2>Création fiche auteur</h2>
+
+    {{ form_start(form,
+        {
+            attr:
+            {
+                'novalidate': 'novalidate',
+            }
+        }
+    ) }}
+        {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock innerContent %}

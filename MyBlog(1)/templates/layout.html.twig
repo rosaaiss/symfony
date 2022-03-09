@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{#    le template "layout.html.twig" étends "base.html.twig".#}
+{#    On ne réécrit que le bloc "body" de base.html.twig.#}
+
+{#    C'est ici qu'on définit le header et le footer qui seront commun aux autres pages.#}
+{#    On définit aussi le bloc "content", pour pouvoir y placer tous les contenus propres#}
+{#    aux différentes pages du projet.#}
+
+{#    Ceci permet de modifier en une fois la mise en forme globale de tout le projet#}
+{#    et rends le templating plus fléxible. #}
+
+{% block body %}
+    <header>
+        <img src="{{ asset('image/header.jpg') }}" alt="rust-texture">
+        <h1>
+            <a href="{{ path("myblog_main_home") }}">
+                Bienvenue sur myblog !
+            </a>
+        </h1>
+
+        <nav class="log-nav">
+            {# Le if ... else ... endif ci-dessous permet d'afficher un contenu différent suivant que l'utilisateur #}
+            {# est authentifié (loged-in) ou pas, grace à la fonction is_granted de twig #}
+            {% if is_granted('ROLE_USER') %}
+                {# Quand un utilisateur est connecté, on peut accéder à l'objet qui le représente dans  #}
+                {# app.user, qui est disponible par défaut dans tous les templates  #}
+                <p>Bonjour {{ app.user.prenom }}</p>
+                <a href="{{ path("app_logout") }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Se connecter</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {#         Le bloc content, qu'on crée ici et qu'on laisse vide. #}
+        {#           C'est là que viendra s'insérer le contenu affichable propre à chaque template de notre projet #}
+        {% block innerContent %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <img src="{{ asset('image/footer.jpg') }}" alt="footer rust texture">
+        <nav class="row">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <p><a href="{{ path('myblog_quisommesnous') }}">- Qui sommes nous ?</a></p>
+                <p><a href="{{ path('myblog_cgv') }}">- CGV</a></p>
+                <p><a href="{{ path('myblog_contact') }}">- Nous contacter</p>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <p><a href="{{ path('myblog_values') }}">- Nos valeur</a></p>
+                <p><a href="{{ path('myblog_becomeblogguer') }}">- Devenir blogueur de myblog !</a></p>
+                <p><a href="{{ path('myblog_jointeam') }}">- Rejoindre l'équipe</a></p>
+            </div>
+        </nav>
+
+        <div class="copyright">
+            {#        Pour avoir un copyright toujours à jours, vive la fonction date() de twig ! #}
+            {#        Le  {{ "now" | date("Y") }} s'écrirai <?= date_create("Y") ?> en pur php. #}
+            <p>
+                ©DreamFlake 2002 - {{ "now" | date("Y") }} all right reserved for all countries including Groland
+            </p>
+        </div>
+    </footer>
+
+{% endblock %}

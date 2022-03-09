@@ -1,0 +1,26 @@
+
+{% extends 'layout.html.twig' %}
+
+{% block title %}Création article - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <h2>Création d'un article</h2>
+
+    {#
+
+    les différents fragments de formulaire et leurs noms dans la doc symfony :
+    https://symfony.com/doc/current/form/form_themes.html#form-fragment-naming
+    #}
+    {{ form_start(form,
+        {
+            attr:
+            {
+                'novalidate': 'novalidate',
+            }
+    }
+    ) }}
+        {{ form_rest(form) }}
+        <input type="submit" value="sauver" class="btn btn-primary">
+    {{ form_end(form) }}
+
+{% endblock innerContent %}

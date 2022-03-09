@@ -1,0 +1,164 @@
+#Tout sur les routes dans symfony :
+#    https://symfony.com/doc/current/routing.html
+#
+#    ATTENTION AUX ESPACES, en yaml c'est l'indentation et les deux points
+#    qui tiennent lieu de parentésage.
+
+
+myblog_main_home: # le nom de la route en premier, c'est lui qui sert à générer des url avec $this->generateUrl("nom_de_la_route")
+    #    ou $this->redirectToRoute("nom_de_la_route") dans un controlleur,
+    #    avec {{ parth("nom_de_la_route") }} dans un template twig.
+    path: / # l'url que la route doit servir.
+    controller: App\Controller\HomeController::index #enfin
+#    le controlleur à appeler quand l'url correspond sous la forme :
+#    App\Controller\NomDuController::nomDeLaMethodePublique
+
+
+#la route pour le logout est particulière : il suffit de créer une route qui a le name entré dans le fichier
+# security.yaml (voir commentaire)
+# et de définir son path. Pas besoin de contrôlleur, car elle sera "interceptée" par symfony pour faire
+# la déconnexion.
+app_logout:
+    path: /logout
+    methods: GET
+
+
+################################################################
+#                            AUTEUR                            #
+################################################################
+myblog_auteur_show:
+    path: /auteur/show/{idAuteur} # {idAuteur} est un paramètre. Sa valeur n'est pas fixe, et il sera transmis à une variable
+    # du même nom dans le controller appelé. Ici $idAuteur sera transmis à la méthode show() de AuteurController.
+    controller: App\Controller\AuteurController::show
+
+myblog_auteur_showall:
+    path: /auteur/show-all
+    controller: App\Controller\AuteurController::showAll
+
+myblog_auteur_create:
+    path: /auteur/create
+    controller: App\Controller\AuteurController::create
+
+myblog_auteur_update:
+    path: /auteur/update/{idAuteur}
+    controller: App\Controller\AuteurController::update
+
+myblog_auteur_remove:
+    path: /auteur/remove/{idAuteur}
+    controller: App\Controller\AuteurController::remove
+
+################################################################
+#                            ARTICLE                           #
+################################################################
+myblog_article_show:
+    path: /article/show/{idArticle}
+    controller: App\Controller\ArticleController::show
+    requirements:
+        idArticle: '\d+'
+
+myblog_article_showall:
+    path: /article/show-all
+    controller: App\Controller\ArticleController::showAll
+
+myblog_article_create:
+    path: /article/create
+    controller: App\Controller\ArticleController::create
+
+myblog_article_update:
+    path: /article/update/{idArticle}
+    controller: App\Controller\ArticleController::update
+    requirements:
+        idArticle: '\d+'
+
+myblog_article_remove:
+    path: /article/remove/{idArticle}
+    controller: App\Controller\ArticleController::remove
+    requirements:
+        idArticle: '\d+'
+
+myblog_main_lucky:
+    path: /lucky/{number}
+    controller: App\Controller\HomeController::lucky
+    requirements:
+        number: '\d+'
+
+################################################################
+#                         Pages Statiques                      #
+################################################################
+# Quand il n'y a pas besoin d'un controller parce que la page contient un contenu fixe,
+# on écrit une route comme d'habitude, mais au lieu d'un de nos controller, on appelle
+# un controlleur Symfony : le TemplateController. Et on precise quel template il faut
+# rendre.
+
+# Dans notre projet ce sont tous les liens du footer
+myblog_cgv:
+    path:          /cgv
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/cgv.html.twig'
+
+myblog_quisommesnous:
+    path:          /qui-sommes-nous
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/quiSommesNous.html.twig'
+
+
+myblog_contact:
+    path:          /contact
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/contact.html.twig'
+
+myblog_values:
+    path:          /nos-valleurs
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/values.html.twig'
+
+myblog_becomeblogguer:
+    path:          /devenir-bloggueur
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/devenirBloggueur.html.twig'
+
+myblog_jointeam:
+    path:          /rejoindre-l-equipe
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        # le chemin du template à afficher.
+        template:  'statique/joinTeam.html.twig'
+
+################################################################
+#                            COMMENTAIRE                           #
+###############################################################
+
+
+myblog_commentaire_index:
+    path: article/{article}/commentaire
+    controller: App/Controller/CommentaireController::index
+
+
+myblog_commentaire_new:
+    path: article/show/{article}/commentaire/nouveau
+    controller: App/Controller/CommentaireController::new
+
+myblog_commentaire_show:
+    path: article/show/{article}/commentaire/{commentaire}
+    controller: App/Controller/CommentaireController::show
+
+
+
+myblog_commentaire_update:
+    path: article/show/{article}/commentaire/editer/{commentaire}
+    controller: App/Controller/CommentaireController::update
+
+
+myblog_commentaire_delete:
+    path: article/show/{article}/commentaire/supprimer/{commentaire}
+    controller: App/Controller/CommentaireController::delete

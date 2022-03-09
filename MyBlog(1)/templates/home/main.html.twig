@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Accueil - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <div class="centered">
+        <h3>
+            <a href="{{ path('myblog_article_showall') }}">
+                {# l'espace non sécable, pour que "Nos" et "articles" reste bien sur une ligne. #}
+                Tous nos&nbsp;articles
+            </a>
+        </h3>
+
+        <h3>
+            <a href="{{ path('myblog_auteur_showall') }}">
+                {#  l'espace non sécable, pour que "Nos" et "blogueurs" reste bien sur une ligne. #}
+                Tous nos&nbsp;blogueurs
+            </a>
+        </h3>
+    </div>
+
+    <div class="dernierArticle">
+        <h3>Dernier article du Blog :</h3>
+        {#
+        on teste l'existence d'un dernier article,
+        sinon il n'y aura rien à afficher
+        #}
+        {% if dernierArticle is null %}
+            <p>Aucun article pour l'instant</p>
+        {% else %}
+            <p class="auteurArticle">
+                {#
+                grace à l'approche objet de symfony, on peut facilement avoir accès à l'auteur d'un article puisqu'ils
+                sont liés !
+                Aussi connu sous le nom de traversing, cela permet d'afficher l'auteur d'un article sans avoir à faire
+                la moindre requète.
+                #}
+                Par le <a href="{{ path('myblog_auteur_show', {idAuteur: dernierArticle.auteur.id}) }}">{{ dernierArticle.auteur.fullName }}</a>
+            </p>
+            <p class="dateArticle">
+                {#
+                Une date bien formatée ne fait jamais de mal, surtout que la fonction date() de twig est là pour ça.
+                comment écrire un format tel que "d/m/Y \\à H\\hi" qui afichera quelque chose comme :
+                15/04/2021 à 16h18
+                tout sur la page date du manuel php :
+                https://www.php.net/manual/fr/function.date.php
+                #}
+                le {{ dernierArticle.dateCreation | date("d/m/Y \\à H\\hi")  }}
+            </p>
+            {#
+            Le titre de l'article, avec un lien vers la page de l'article grace à la fonction
+            path('nom de la route', {parametre1 : valeur1, ...)
+            Ici le paramètre est l'id de l'article, nécessaire pour construire la bonne URL
+            #}
+            <h4><a href="{{ path('myblog_article_show', {idArticle: dernierArticle.id} ) }}">{{ dernierArticle.titre }}</a></h4>
+            <p class="articleSumary">
+                {#                On ne veut que les 250 premiers caractères de l'article dans l'apperçu #}
+                {{ dernierArticle.contenu | slice(0,250) }}
+            </p>
+        {% endif %}
+    </div>
+{% endblock innerContent %}

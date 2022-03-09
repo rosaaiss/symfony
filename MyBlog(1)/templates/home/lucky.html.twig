@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lucky - {{ parent() }}{% endblock title %}
+
+{% block body %}
+    <h1>La loterie de la mort</h1>
+
+    {% if userNumber == serverNumber %}
+        <h2>Gagné, tu as trouvé le nombre de la mort !!!</h2>
+    {% else %}
+        <h2>Perdu</h2>
+        <p>Le nombre de la mort était {{ serverNumber }}, tu as choisi {{ userNumber }}</p>
+    {% endif %}
+
+    <ul>
+        {% for letter in tab %}
+            <li>{{ letter }}</li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock body %}

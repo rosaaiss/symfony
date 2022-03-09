@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}articles - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <h3>
+        <a href="{{ path('myblog_article_showall') }}"><- tous les articles</a>
+    </h3>
+
+    <div class="show-article">
+        <h2>{{ article.titre}}</h2>
+        <h3 class="auteur-subtitle">
+            Par le
+            <a href="{{ path("myblog_auteur_show", {idAuteur: article.auteur.id}) }}">
+                {{ article.auteur.fullName }}
+            </a>
+        </h3>
+        <h4>Publié le {{ article.dateCreation | date("d/m/Y \à H\\hi")}} </h4>
+
+        <p class="article">
+            {{ article.contenu }}
+        </p>
+
+        {% if is_granted('ROLE_USER') %}
+            <div>
+                <a href="{{ path("myblog_article_remove", { idArticle: article.id }) }}">
+                    Supprimer
+                </a>
+
+                <a href="{{ path("myblog_article_update", { idArticle: article.id }) }}">
+                    Éditer
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock innerContent %}
+
+
+
+{#
+
+
+
+
+
+#}

@@ -1,0 +1,86 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Auteurs - {{ parent() }}{% endblock title %}
+
+{% block innerContent %}
+    <h2>Tous nos auteurs</h2>
+    {% if is_granted('ROLE_USER') %}
+        <h3>
+            <a href="{{ path('myblog_auteur_create') }}">+ ajouter un auteur</a>
+        </h3>
+    {% endif %}
+
+    {% if allAuteurs is empty  %}
+        <h3> Il n'y a aucun auteur pour l'instant. </h3>
+    {% else %}
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Bio</th>
+                <th>Date de naissance</th>
+                {% if is_granted('ROLE_USER') %}
+                    <th>Action</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+                {% for auteur in allAuteurs %}
+                    <tr>
+                        <td>
+                            <a href="{{ path("myblog_auteur_show", { idAuteur : auteur.id }) }}">
+                                {{ auteur.fullName }}
+                            </a>
+                        </td>
+                        <td>{{ auteur.bio | slice(0, 120) }}...</td>
+                        <td>{{ auteur.dateNaissance | date("d/m/Y") }}</td>
+                        {% if is_granted('ROLE_USER') %}
+                            <td>
+                                <a href="#" class="suppr-auteur" data-src="{{ path("myblog_auteur_remove", { idAuteur: auteur.id }) }}">
+                                    Supprimer
+                                </a>
+                                |
+                                <a href="{{ path("myblog_auteur_update", { idAuteur: auteur.id }) }}">
+                                    Éditer
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock innerContent %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function ()
+        {
+
+            $(".suppr-auteur").on("click", function (event)
+            {
+                //event.preventDefault() ;
+                $(this).parents("tr").fadeOut('slow', function()
+                {
+                    $(this).remove() ;
+                }) ;
+                console.warn("click on : ", event.target) ;
+            }) ;
+        })
+    </script>
+{% endblock javascripts %}
+
+
+
+
+
+
+{#
+
+
+
+
+
+#}
